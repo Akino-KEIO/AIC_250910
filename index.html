@@ -1,12 +1,74 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Website</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>しゅなの自己紹介ページ</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      line-height: 1.6;
+      margin: 2em;
+      background-color: #f4f4f4;
+      color: #333;
+    }
+    .container {
+      max-width: 800px;
+      margin: auto;
+      padding: 2em;
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    h1 {
+      color: #0056b3;
+      border-bottom: 2px solid #0056b3;
+      padding-bottom: 0.5em;
+      text-align: center;
+    }
+    .profile-pic {
+      display: block;
+      margin: 2em auto;
+      width: 100%;
+      height: auto;
+      object-fit: cover;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    h2 {
+      color: #0056b3;
+      margin-top: 1.5em;
+    }
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+    li {
+      background: #eef;
+      margin-bottom: 0.5em;
+      padding: 0.5em;
+      border-radius: 4px;
+    }
+  </style>
 </head>
 <body>
-    <h1>Welcome to my website!</h1>
-    <p>これは私のウェブサイトです。</p>
+  <div class="container">
+    <h1>しゅなの自己紹介</h1>
+    <img src="250911_AIC.jpg" alt="プロフィール画像" class="profile-pic">
+    <p>はじめまして、しゅなです。</p>
+    
+    <h2>プロフィール</h2>
+    <ul>
+      <li><strong>ニックネーム:</strong> しゅな</li>
+      <li><strong>所属:</strong> 慶應通信 法学部</li>
+    </ul>
+
+    <h2>趣味</h2>
+    <ul>
+      <li>漫画を読むこと</li>
+      <li>音楽鑑賞 (EDM, Emo Rock)</li>
+      <li>映画鑑賞</li>
+    </ul>
+  </div>
 </body>
 </html>

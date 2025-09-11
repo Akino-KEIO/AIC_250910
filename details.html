@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>詳細ページ - Three.js アニメーション</title>
+  <style>
+    body { margin: 0; overflow: hidden; background-color: #000; }
+    canvas { display: block; }
+    .back-button {
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
+      padding: 12px 25px;
+      background-color: #1877f2;
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+      z-index: 100; /* Ensure button is on top of three.js canvas */
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      font-size: 1.1em;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+    .back-button:hover {
+      background-color: #145cb3;
+      transform: translateY(-2px);
+    }
+  </style>
+</head>
+<body>
+  <a href="index.html" class="back-button">自己紹介ページに戻る</a>
+
+  <script type="module">
+    import * as THREE from 'https://unpkg.com/three@0.128.0/build/three.module.js';
+
+    // Scene, Camera, Renderer setup
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.body.appendChild(renderer.domElement);
+
+    // Lighting
+    const ambientLight = new THREE.AmbientLight(0x404040); // Soft white light
+    scene.add(ambientLight);
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8); // Brighter white light
+    directionalLight.position.set(1, 1, 1).normalize();
+    scene.add(directionalLight);
+
+    camera.position.z = 8;
+    camera.position.y = 3;
+    camera.lookAt(0, 0, 0); // Look at the center of the pyramid
+
+    // Colorful blocks (Rainbow colors)
+    const colors = [
+      0xFF0000, // Red
+      0xFF7F00, // Orange
+      0xFFFF00, // Yellow
+      0x00FF00, // Green
+      0x0000FF, // Blue
+      0x4B0082, // Indigo
+      0x9400D3  // Violet
+    ];
+
+    const blocks = [];
+    const blockSize = 1.2; // Slightly larger blocks
+    const pyramidHeight = 7; // Number of layers
+
+    // Function to create a block
+    function createBlock(x, y, z, color) {
+        const geometry = new THREE.BoxGeometry(blockSize, blockSize, blockSize);
+        const material = new THREE.MeshLambertMaterial({ color: color });
+        const block = new THREE.Mesh(geometry, material);
+        block.position.set(x, y, z);
+        scene.add(block);
+        return block;
+    }
+
+    // Animation variables
+    let currentLayer = 0;
+    let blocksInCurrentLayer = 0;
+    let maxBlocksInLayer = pyramidHeight; // Start with the widest layer
+    let blockCounter = 0;
+    let animationTimer = 0; // To control block appearance speed
+    const blockAppearInterval = 10; // Frames between block appearances
+
+    // Animation loop
+    function animate() {
+        requestAnimationFrame(animate);
+
+        animationTimer++;
+
+        if (animationTimer % blockAppearInterval === 0) {
+            if (currentLayer < pyramidHeight) {
+                if (blocksInCurrentLayer < maxBlocksInLayer) {
+                    const x = (blocksInCurrentLayer - (maxBlocksInLayer - 1) / 2) * blockSize;
+                    const y = (pyramidHeight - currentLayer) * blockSize * 1.5; // Start higher for falling effect
+                    const z = 0;
+                    const block = createBlock(x, y, z, colors[blockCounter % colors.length]);
+                    blocks.push(block);
+                    blocksInCurrentLayer++;
+                    blockCounter++;
+                } else {
+                    currentLayer++;
+                    maxBlocksInLayer--; // Next layer is narrower
+                    blocksInCurrentLayer = 0;
+                }
+            }
+        }
+
+        // Simple falling animation for existing blocks
+        blocks.forEach(block => {
+            if (block.position.y > (pyramidHeight - (blocks.indexOf(block) / (pyramidHeight * pyramidHeight / 2)) * blockSize) - blockSize / 2) { // Simplified target Y
+                block.position.y -= 0.05; // Fall speed
+            }
+        });
+
+        renderer.render(scene, camera);
+    }
+
+    animate();
+
+    // Handle window resize
+    window.addEventListener('resize', () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+  </script>
+</body>
+</html>

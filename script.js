@@ -27,28 +27,31 @@ document.addEventListener('DOMContentLoaded', function() {
         { base: '#b2ebf2', accent: '#0097a7' }   // Pastel Cyan for Cyan particles
     ];
 
-    const image = document.querySelector('.profile-pic');
     const root = document.documentElement;
-    let currentThemeIndex = 4; // Start with light blue
+    let currentThemeIndex = -1; // Initialize to -1 so the first call to switchTheme picks index 0
 
-    if (image) {
-        image.addEventListener('click', function() {
-            let newThemeIndex;
-            do {
-                newThemeIndex = Math.floor(Math.random() * themes.length);
-            } while (newThemeIndex === currentThemeIndex);
-            
-            currentThemeIndex = newThemeIndex;
-            const selectedTheme = themes[currentThemeIndex];
+    function switchTheme() {
+        let newThemeIndex;
+        do {
+            newThemeIndex = Math.floor(Math.random() * themes.length);
+        } while (newThemeIndex === currentThemeIndex);
+        
+        currentThemeIndex = newThemeIndex;
+        const selectedTheme = themes[currentThemeIndex];
 
-            // Update p5.js background color
-            if (typeof currentBgColor !== 'undefined' && typeof color !== 'undefined') {
-                currentBgColor = color(selectedTheme.base);
-            }
+        // Update p5.js background color
+        if (typeof currentBgColor !== 'undefined' && typeof color !== 'undefined') {
+            currentBgColor = color(selectedTheme.base);
+        }
 
-            // Update CSS variables
-            root.style.setProperty('--bg-color-base', selectedTheme.base);
-            root.style.setProperty('--accent-color', selectedTheme.accent);
-        });
+        // Update CSS variables
+        root.style.setProperty('--bg-color-base', selectedTheme.base);
+        root.style.setProperty('--accent-color', selectedTheme.accent);
     }
+
+    // Initial theme set
+    switchTheme();
+
+    // Change theme every 5 seconds
+    setInterval(switchTheme, 5000);
 });

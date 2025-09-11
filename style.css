@@ -81,10 +81,11 @@ li {
   padding: 1em;
   border-radius: 8px;
   font-size: 1.1em;
+  color: #333333; /* Fixed to black */
 }
 
 strong {
-  color: var(--accent-color);
+  color: #333333;
 }
 
 p#typing-animation {
